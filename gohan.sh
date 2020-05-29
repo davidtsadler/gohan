@@ -7,6 +7,8 @@
 
 installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
+error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit;}
+
 ### THE ACTUAL SCRIPT ###
 
 ### This is how everything happens in an intuitive format and order.
