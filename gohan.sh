@@ -43,3 +43,10 @@ welcomemsg || error "User exited."
 
 # Last chance for user to back out before install.
 preinstallmsg || error "User exited."
+
+### The rest of the script requires no user input.
+
+dialog --title "Gohan Installation" --infobox "Installing \`basedevel\` and \`git\` for installing other software required for the installation of other programs." 5 70
+installpkg curl
+installpkg base-devel
+installpkg git
