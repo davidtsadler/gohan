@@ -3,9 +3,19 @@
 # by David T. Sadler <davidtsadler@googlemail.com>
 # License: GNU GPLv3
 
+### OPTIONS AND VARIABLES ###
+
+while getopts ":p:h" o; do case "${o}" in
+  h) printf "Optional arguments for custom use:\\n  -p: Dependencies and programs csv (local file or url)\\n  -h: Show this message\\n" && exit ;;
+  p) packages=${OPTARG} ;;
+  *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
+esac done
+
+[ -z "$packages" ] && packages="https://raw.githubusercontent.com/davidtsadler/gohan/master/packages.csv"
+
 ### FUNCTIONS ###
 
-install_pkg() {
+install_package() {
   pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
 }
 
@@ -51,9 +61,24 @@ add_user() {
   unset pass1 pass2
 }
 
+maininstall() { 
+  dialog --title "GOHAN Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
+  install_package "$1"
+}
+
+install_packages() {
+  ([ -f "$packages" ] && cp "$packages" /tmp/packages.csv) || curl -Ls "$packages" > /tmp/packages.csv
+  total=$(wc -l < /tmp/packages.csv)
+  while IFS=, read -r program comment; do
+    n=$((n+1))
+    echo "$comment" | grep "^\".*\"$" >/dev/null 2>&1 && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
+    maininstall "$program" "$comment"
+  done < /tmp/packages.csv
+}
+
 ### THE ACTUAL SCRIPT ###
 
-install_pkg dialog || error "Are you sure you're running this as the root user and have an internet connection?"
+install_package dialog || error "Are you sure you're running this as the root user and have an internet connection?"
 
 welcome_msg || error "User exited."
 
@@ -64,5 +89,7 @@ user_check || error "User exited."
 preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
+
+install_packages
 
 clear
