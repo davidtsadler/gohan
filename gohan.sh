@@ -61,7 +61,33 @@ add_user() {
   unset pass1 pass2
 }
 
-maininstall() { 
+get_github_ssh_keys() {
+  # Prompts user for private and public ssh keys for connecting to GitHub.
+  touch /tmp/emptyfile
+  dialog --title "SSH" --msgbox "You will be prompted to enter the private SSH key used to connect to GitHub" 10 60
+  githubPrivateKey=$(dialog --editbox /tmp/emptyfile 60 60 3>&1 1>&2 2>&3 3>&1) || exit
+  dialog --title "SSH" --msgbox "You will know be prompted to enter the public SSH key used to connect to GitHub" 10 60
+  githubPublicKey=$(dialog --editbox /tmp/emptyfile 10 60 3>&1 1>&2 2>&3 3>&1)
+  rm /tmp/emptyfile
+}
+
+save_github_ssh_keys() {
+  [ ! -d "/home/$name/.ssh" ] && mkdir -p "/home/$name/.ssh/github.com"
+  echo "$githubPrivateKey" > "/home/$name/.ssh/github.com/id_rsa"
+  echo "$githubPublicKey" > "/home/$name/.ssh/github.com/id_rsa.pub"
+  cat << EOF > "/home/$name/.ssh/config"
+Host github.com
+  IdentityFile /home/${name}/.ssh/github.com/id_rsa
+EOF
+  chown -R "$name":"$name" "/home/$name/.ssh"
+  chmod 700 "/home/$name/.ssh"
+  chmod 644 "/home/$name/.ssh/config"
+  chmod 700 "/home/$name/.ssh/github.com"
+  chmod 600 "/home/$name/.ssh/github.com/id_rsa"
+  chmod 644 "/home/$name/.ssh/github.com/id_rsa.pub"
+}
+
+maininstall() {
   dialog --title "GOHAN Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
   install_package "$1"
 }
@@ -89,6 +115,9 @@ user_check || error "User exited."
 preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
+
+get_github_ssh_keys || error "Error getting the GitHub SSH keys."
+save_github_ssh_keys || error "Error saving the GitHub SSH keys."
 
 install_packages
 
