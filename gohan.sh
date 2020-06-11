@@ -102,6 +102,23 @@ install_packages() {
   done < /tmp/packages.csv
 }
 
+install_github_repositories() {
+  [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
+  install_from_github git@github.com:davidtsadler/st.git
+  install_from_github git@github.com:davidtsadler/dwm.git
+  install_from_github git@github.com:davidtsadler/dmenu.git
+}
+
+install_from_github() {
+  progname="$(basename "$1" .git)"
+  repodir="/home/$name/.local/src"
+  dir="$repodir/$progname"
+  dialog --title "GOHAN Installation" --infobox "Installing \`$progname\` via \`git\` and \`make\`." 5 70
+  sudo -u "$name" git clone --depth 1 "$1" "$dir" >/dev/null 2>&1
+  cd "$dir" || exit
+  sudo -u "$name" make clean install >/dev/null 2>&1
+}
+
 ### THE ACTUAL SCRIPT ###
 
 install_package dialog || error "Are you sure you're running this as the root user and have an internet connection?"
@@ -120,5 +137,7 @@ get_github_ssh_keys || error "Error getting the GitHub SSH keys."
 save_github_ssh_keys || error "Error saving the GitHub SSH keys."
 
 install_packages
+
+install_github_repositories
 
 clear
