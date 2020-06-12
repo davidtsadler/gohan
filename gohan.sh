@@ -72,8 +72,8 @@ install_dotfiles() {
   dialog --infobox "Downloading and installing dotfiles..." 4 60
   [ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name":"$name" "$2"
   sudo -u "$name" git clone --bare --depth 1 "$1" "$2" >/dev/null 2>&1
-  sudo -u "$name" git --git-dir="$2" --work-tree=$HOME checkout
-  sudo -u "$name" git --git-dir="$2" --work-tree=$HOME config --local status.showUntrackedFiles no
+  sudo -u "$name" git --git-dir="$2" --work-tree="/home/$name" checkout
+  sudo -u "$name" git --git-dir="$2" --work-tree="/home/$name" config --local status.showUntrackedFiles no
 }
 
 install_software() {
@@ -118,7 +118,7 @@ preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
 
-install_dotfiles $dotfilesrepo "/home/$name/.local/src"
+install_dotfiles $dotfilesrepo "/home/$name/.local/src/dotfiles"
 
 install_software
 
