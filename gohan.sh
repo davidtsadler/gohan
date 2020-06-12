@@ -15,7 +15,7 @@ esac done
 
 ### FUNCTIONS ###
 
-install_package() {
+install_from_pacman() {
   pacman --noconfirm --needed -S "$1" >/dev/null 2>&1
 }
 
@@ -57,63 +57,34 @@ add_user() {
   # Adds user `$name` with password $pass1.
   dialog --infobox "Adding user \"$name\"..." 4 50
   useradd -m -s /bin/bash "$name" >/dev/null 2>&1 || mkdir -p /home/"$name" && chown "$name":"$name" /home/"$name"
+  [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
   echo "$name:$pass1" | chpasswd
   unset pass1 pass2
 }
 
-get_github_ssh_keys() {
-  # Prompts user for private and public ssh keys for connecting to GitHub.
-  touch /tmp/emptyfile
-  dialog --title "SSH" --msgbox "You will be prompted to enter the private SSH key used to connect to GitHub" 10 60
-  githubPrivateKey=$(dialog --editbox /tmp/emptyfile 60 60 3>&1 1>&2 2>&3 3>&1) || exit
-  dialog --title "SSH" --msgbox "You will know be prompted to enter the public SSH key used to connect to GitHub" 10 60
-  githubPublicKey=$(dialog --editbox /tmp/emptyfile 10 60 3>&1 1>&2 2>&3 3>&1)
-  rm /tmp/emptyfile
-}
-
-save_github_ssh_keys() {
-  [ ! -d "/home/$name/.ssh" ] && mkdir -p "/home/$name/.ssh/github.com"
-  echo "$githubPrivateKey" > "/home/$name/.ssh/github.com/id_rsa"
-  echo "$githubPublicKey" > "/home/$name/.ssh/github.com/id_rsa.pub"
-  cat << EOF > "/home/$name/.ssh/config"
-Host github.com
-  IdentityFile /home/${name}/.ssh/github.com/id_rsa
-EOF
-  chown -R "$name":"$name" "/home/$name/.ssh"
-  chmod 700 "/home/$name/.ssh"
-  chmod 644 "/home/$name/.ssh/config"
-  chmod 700 "/home/$name/.ssh/github.com"
-  chmod 600 "/home/$name/.ssh/github.com/id_rsa"
-  chmod 644 "/home/$name/.ssh/github.com/id_rsa.pub"
-}
-
-maininstall() {
-  dialog --title "GOHAN Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
-  install_package "$1"
-}
-
-install_packages() {
+install_software() {
   ([ -f "$packages" ] && cp "$packages" /tmp/packages.csv) || curl -Ls "$packages" > /tmp/packages.csv
   total=$(wc -l < /tmp/packages.csv)
-  while IFS=, read -r program comment; do
+  while IFS=, read -r tag program comment; do
     n=$((n+1))
     echo "$comment" | grep "^\".*\"$" >/dev/null 2>&1 && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
-    maininstall "$program" "$comment"
+    case "$tag" in
+      "G") install_from_github "$program" "$comment" ;;
+      *) install_package "$program" "$comment" ;;
+    esac
   done < /tmp/packages.csv
 }
 
-install_github_repositories() {
-  [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
-  install_from_github git@github.com:davidtsadler/st.git
-  install_from_github git@github.com:davidtsadler/dwm.git
-  install_from_github git@github.com:davidtsadler/dmenu.git
+install_package() {
+  dialog --title "GOHAN Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
+  install_from_pacman "$1"
 }
 
 install_from_github() {
   progname="$(basename "$1" .git)"
   repodir="/home/$name/.local/src"
   dir="$repodir/$progname"
-  dialog --title "GOHAN Installation" --infobox "Installing \`$progname\` via \`git\` and \`make\`." 5 70
+  dialog --title "GOHAN Installation" --infobox "Installing \`$progname\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2" 5 70
   sudo -u "$name" git clone --depth 1 "$1" "$dir" >/dev/null 2>&1
   cd "$dir" || exit
   sudo -u "$name" make clean install >/dev/null 2>&1
@@ -121,7 +92,7 @@ install_from_github() {
 
 ### THE ACTUAL SCRIPT ###
 
-install_package dialog || error "Are you sure you're running this as the root user and have an internet connection?"
+install_from_pacman dialog || error "Are you sure you're running this as the root user and have an internet connection?"
 
 welcome_msg || error "User exited."
 
@@ -133,11 +104,6 @@ preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
 
-get_github_ssh_keys || error "Error getting the GitHub SSH keys."
-save_github_ssh_keys || error "Error saving the GitHub SSH keys."
-
-install_packages
-
-install_github_repositories
+install_software
 
 clear

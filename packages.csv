@@ -1,9 +1,12 @@
-#Name, Description
-base-devel,is needed to compile software
-git,is needed to install software from git repositories
-libx11,is required to compile some software
-libxft,is required to compile some software
-sudo,allows root to install software as a different user
-terminus-font,is a monospace font that can be used in st.
-xorg-server,is the display server
-xorg-xinit,will allow us to start the display server
+#Tag, Name, Description
+,base-devel,is needed to compile software
+,git,is needed to install software from git repositories
+,libx11,is required to compile some software
+,libxft,is required to compile some software
+,sudo,allows root to install software as a different user
+,terminus-font,is a monospace font that can be used in st.
+,xorg-server,is the display server
+,xorg-xinit,will allow us to start the display server
+G,https://github.com:davidtsadler/dmenu.git,is a dynamic menu
+G,https://github.com:davidtsadler/dwm.git,is a dynamic window manager
+G,https://github.com:davidtsadler/st.git,is a simple terminal
