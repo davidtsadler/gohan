@@ -6,11 +6,13 @@
 ### OPTIONS AND VARIABLES ###
 
 while getopts ":p:h" o; do case "${o}" in
-  h) printf "Optional arguments for custom use:\\n  -p: Dependencies and programs csv (local file or url)\\n  -h: Show this message\\n" && exit ;;
+  h) printf "Optional arguments for custom use:\\n  -r: Dotfiles repository\\n  -p: Dependencies and programs csv (local file or url)\\n  -h: Show this message\\n" && exit ;;
+  r) dotfilesrepo=${OPTARG} && git ls-remote "$dotfilesrepo" || exit ;;
   p) packages=${OPTARG} ;;
   *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
 esac done
 
+[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/davidtsadler/dotfiles.git"
 [ -z "$packages" ] && packages="https://raw.githubusercontent.com/davidtsadler/gohan/master/packages.csv"
 
 ### FUNCTIONS ###
@@ -58,8 +60,20 @@ add_user() {
   dialog --infobox "Adding user \"$name\"..." 4 50
   useradd -m -s /bin/bash "$name" >/dev/null 2>&1 || mkdir -p /home/"$name" && chown "$name":"$name" /home/"$name"
   [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
+  # Remove these files as they will be installed as part of the dotfiles.
+  [ -f "/home/$name/.bash_logout" ] && rm /home/$name/.bash_logout
+  [ -f "/home/$name/.bash_profile" ] && rm /home/$name/.bash_profile
+  [ -f "/home/$name/.bashrc" ] && rm /home/$name/.bashrc
   echo "$name:$pass1" | chpasswd
   unset pass1 pass2
+}
+
+install_dotfiles() {
+  dialog --infobox "Downloading and installing dotfiles..." 4 60
+  [ ! -d "$2" ] && mkdir -p "$2" && chown -R "$name":"$name" "$2"
+  sudo -u "$name" git clone --bare --depth 1 "$1" "$2" >/dev/null 2>&1
+  sudo -u "$name" git --git-dir="$2" --work-tree=$HOME checkout
+  sudo -u "$name" git --git-dir="$2" --work-tree=$HOME config --local status.showUntrackedFiles no
 }
 
 install_software() {
@@ -103,6 +117,8 @@ user_check || error "User exited."
 preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
+
+install_dotfiles $dotfilesrepos "/home/$name/.local/src"
 
 install_software
 
