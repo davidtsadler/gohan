@@ -118,7 +118,7 @@ preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
 
-install_dotfiles $dotfilesrepos "/home/$name/.local/src"
+install_dotfiles $dotfilesrepo "/home/$name/.local/src"
 
 install_software
 
