@@ -62,6 +62,7 @@ add_user() {
   usermod -aG wheel "$name"
   [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
   # Remove these files as they will be installed as part of the dotfiles.
+  [ -f "/home/$name/.bash_history" ] && rm /home/$name/.bash_history
   [ -f "/home/$name/.bash_logout" ] && rm /home/$name/.bash_logout
   [ -f "/home/$name/.bash_profile" ] && rm /home/$name/.bash_profile
   [ -f "/home/$name/.bashrc" ] && rm /home/$name/.bashrc
