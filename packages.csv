@@ -3,6 +3,7 @@
 ,git,is needed to install software from git repositories
 ,libx11,is a dependency when compiling some software
 ,libxft,is a dependency when compiling some software
+,openssh,is a premier connectivity tool for remote login with the SSH protocol
 ,sudo,allows users to run commands as root
 ,terminus-font,is a monospace font that can be used in st
 ,xorg-server,is the display server
