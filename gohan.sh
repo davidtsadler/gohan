@@ -59,6 +59,7 @@ add_user() {
   # Adds user `$name` with password $pass1.
   dialog --infobox "Adding user \"$name\"..." 4 50
   useradd -m -s /bin/bash "$name" >/dev/null 2>&1 || mkdir -p /home/"$name" && chown "$name":"$name" /home/"$name"
+  usermod -aG wheel "$name"
   [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
   # Remove these files as they will be installed as part of the dotfiles.
   [ -f "/home/$name/.bash_logout" ] && rm /home/$name/.bash_logout
@@ -104,6 +105,10 @@ install_from_github() {
   sudo -u "$name" make clean install >/dev/null 2>&1
 }
 
+configure_sudo() {
+  [ -f /etc/sudoers ] && sed -i "s/# %wheel ALL=(ALL) NOPASSWORD: ALL/%wheel ALL=(ALL) NOPASSWORD: ALL/" /etc/sudoers
+}
+
 ### THE ACTUAL SCRIPT ###
 
 install_from_pacman dialog || error "Are you sure you're running this as the root user and have an internet connection?"
@@ -121,5 +126,7 @@ add_user || error "Error adding username and/or password."
 install_dotfiles $dotfilesrepo "/home/$name/.local/src/dotfiles"
 
 install_software
+
+configure_sudo()
 
 clear
