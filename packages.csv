@@ -1,10 +1,10 @@
 #Tag, Name, Description
-,base-devel,is needed to compile software
+,base-devel,contains tools to compile software
 ,git,is needed to install software from git repositories
-,libx11,is required to compile some software
-,libxft,is required to compile some software
-,sudo,allows root to install software as a different user
-,terminus-font,is a monospace font that can be used in st.
+,libx11,is a dependency when compiling some software
+,libxft,is a dependency when compiling some software
+,sudo,allows users to run commands as root
+,terminus-font,is a monospace font that can be used in st
 ,xorg-server,is the display server
 ,xorg-xinit,will allow us to start the display server
 G,https://github.com/davidtsadler/dmenu.git,is a dynamic menu
