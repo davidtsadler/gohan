@@ -85,6 +85,7 @@ install_software() {
     n=$((n+1))
     echo "$comment" | grep "^\".*\"$" >/dev/null 2>&1 && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
     case "$tag" in
+      "A") install_from_aur "$program" "$comment" ;;
       "G") install_from_github "$program" "$comment" ;;
       *) install_package "$program" "$comment" ;;
     esac
@@ -94,6 +95,11 @@ install_software() {
 install_package() {
   dialog --title "GOHAN Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
   install_from_pacman "$1"
+}
+
+install_from_aur() {
+  dialog --title "GOHAN Installation" --infobox "Installing \`$1\` ($n of $total) from the AUR. $1 $2" 5 70
+  sudo -u "$name" yay -S --noconfirm "$1" >/dev/null 2>&1
 }
 
 install_from_github() {
