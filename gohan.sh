@@ -107,6 +107,7 @@ install_from_github() {
 }
 
 configure_sudo() {
+  install_from_pacman sudo
   [ -f /etc/sudoers ] && sed -i "s/# %wheel ALL=(ALL) NOPASSWORD: ALL/%wheel ALL=(ALL) NOPASSWORD: ALL/" /etc/sudoers
 }
 
@@ -124,10 +125,10 @@ preinstall_msg || error "User exited."
 
 add_user || error "Error adding username and/or password."
 
+configure_sudo
+
 install_dotfiles $dotfilesrepo "/home/$name/.local/src/dotfiles"
 
 install_software
-
-configure_sudo()
 
 clear
