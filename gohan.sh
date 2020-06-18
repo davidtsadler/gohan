@@ -111,6 +111,20 @@ configure_sudo() {
   [ -f /etc/sudoers ] && sed -i "s/# %wheel ALL=(ALL) NOPASSWORD: ALL/%wheel ALL=(ALL) NOPASSWORD: ALL/" /etc/sudoers
 }
 
+install_yay() {
+  [ -f "/usr/bin/yay" ] || (
+  dialog --infobox "Installing \"yay\", an AUR helper..." 4 50
+  cd /tmp || exit
+  rm -rf /tmp/yay*
+  # Use all cores for compilation.
+  sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
+  curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/yay.tar.gz &&
+  sudo -u "$name" tar -xvf yar.tar.gz >/dev/null 2>&1 &&
+  cd yay &&
+  sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
+  cd /tmp || return);
+}
+
 ### THE ACTUAL SCRIPT ###
 
 install_from_pacman dialog || error "Are you sure you're running this as the root user and have an internet connection?"
@@ -128,6 +142,8 @@ add_user || error "Error adding username and/or password."
 configure_sudo
 
 install_dotfiles $dotfilesrepo "/home/$name/.local/src/dotfiles"
+
+install_yay
 
 install_software
 
