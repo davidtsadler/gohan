@@ -114,7 +114,7 @@ install_from_github() {
 
 configure_sudo() {
   install_from_pacman sudo
-  [ -f /etc/sudoers ] && sed -i "s/# %wheel ALL=(ALL) NOPASSWORD: ALL/%wheel ALL=(ALL) NOPASSWORD: ALL/" /etc/sudoers
+  [ -f /etc/sudoers ] && sed -i "s/# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/" /etc/sudoers
 }
 
 install_yay() {
