@@ -125,7 +125,7 @@ install_yay() {
   # Use all cores for compilation.
   sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
   curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/yay.tar.gz &&
-  sudo -u "$name" tar -xvf yar.tar.gz >/dev/null 2>&1 &&
+  sudo -u "$name" tar -xvf yay.tar.gz >/dev/null 2>&1 &&
   cd yay &&
   sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
   cd /tmp || return);
