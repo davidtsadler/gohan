@@ -131,6 +131,12 @@ install_yay() {
   cd /tmp || return);
 }
 
+install_nodejs() {
+  [ ! -d "/home/$name/.local/src/nvm" ] && mkdir -p "/home/$name/.local/src/nvm" && chown "$name":"$name" "/home/$name/.local/src/nvm" &&
+  sudo -u "$name" curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | NVM_DIR="/home/$name/.local/src/nvm" bash >/dev/null 2>&1 &&
+  [ -d "/home/$name/.local/src/nvm" ] && chown -R "$name":"$name" "/home/$name/.local/src/nvm"
+}
+
 ### THE ACTUAL SCRIPT ###
 
 install_from_pacman dialog || error "Are you sure you're running this as the root user and have an internet connection?"
@@ -152,5 +158,7 @@ install_dotfiles $dotfilesrepo "/home/$name/.local/src/dotfiles"
 install_yay
 
 install_software
+
+install_nodejs
 
 clear
