@@ -4,6 +4,7 @@
 ,libx11,is a dependency when compiling some software
 ,libxft,is a dependency when compiling some software
 ,openssh,is a premier connectivity tool for remote login with the SSH protocol
+,php,is a web development scripting language
 ,terminus-font,is a monospace font that can be used in st
 ,xorg-server,is the display server
 ,xorg-xinit,will allow us to start the display server
