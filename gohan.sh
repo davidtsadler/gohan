@@ -137,6 +137,13 @@ install_nodejs() {
   [ -d "/home/$name/.local/src/nvm" ] && chown -R "$name":"$name" "/home/$name/.local/src/nvm"
 }
 
+install_composer() {
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" >/dev/null 2>&1
+  php -r "if (hash_file('sha384', 'composer-setup.php') === '572cb359b56ad9ae52f9c23d29d4b19a040af10d6635642e646a7caa7b96de717ce683bd797a92ce99e5929cc51e7d5f') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" >/dev/null 2>&1
+  php composer-setup.php --install-dir="/home/$name/.local/bin" --filename=composer >/dev/null 2>&1
+  [ -f "/home/$name/.local/bin/composer" ] && chown "$name:$name" "/home/$name/.local/bin/composer"
+}
+
 ### THE ACTUAL SCRIPT ###
 
 install_from_pacman dialog || error "Are you sure you're running this as the root user and have an internet connection?"
@@ -160,5 +167,7 @@ install_yay
 install_software
 
 install_nodejs
+
+install_composer
 
 clear
