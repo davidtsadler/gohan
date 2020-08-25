@@ -1,4 +1,5 @@
 #Tag, Name, Description
+,alsa-utils, contains utilities for ALSA
 ,base-devel,contains tools to compile software
 ,git,is needed to install software from git repositories
 ,libx11,is a dependency when compiling some software
