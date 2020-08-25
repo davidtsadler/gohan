@@ -144,6 +144,11 @@ install_composer() {
   [ -f "/home/$name/.local/bin/composer" ] && chown "$name:$name" "/home/$name/.local/bin/composer"
 }
 
+install_auto_cpufreq_service() {
+  systemctl start auto-cpufreq
+  systemctl enable auto-cpufreq
+}
+
 ### THE ACTUAL SCRIPT ###
 
 install_from_pacman dialog || error "Are you sure you're running this as the root user and have an internet connection?"
@@ -169,5 +174,7 @@ install_software
 install_nvm
 
 install_composer
+
+install_auto_cpufreq_service
 
 clear

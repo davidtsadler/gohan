@@ -10,6 +10,7 @@
 ,xorg-server,is the display server
 ,xorg-xinit,will allow us to start the display server
 A,brave-bin,is a free and open-source web browser that blocks ads and website trackers
+A,auto-cpufreq-git,an automatic CPU speed & power optimizer
 G,https://github.com/davidtsadler/dmenu.git,is a dynamic menu
 G,https://github.com/davidtsadler/dwm.git,is a dynamic window manager
 G,https://github.com/davidtsadler/st.git,is a simple terminal
