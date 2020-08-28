@@ -7,10 +7,13 @@
 ,openssh,is a premier connectivity tool for remote login with the SSH protocol
 ,php,is a web development scripting language
 ,terminus-font,is a monospace font that can be used in st
+,wget,utility for downloading files via the command line
 ,xorg-server,is the display server
 ,xorg-xinit,will allow us to start the display server
-A,brave-bin,is a free and open-source web browser that blocks ads and website trackers
 A,auto-cpufreq-git,an automatic CPU speed & power optimizer
+A,brave-bin,is a free and open-source web browser that blocks ads and website trackers
+A,ttf-meslo-nerd-font-powerlevel10k,font for powerlevel10k
+A,zsh-theme-powerlevel10k-git,powerlevel10k theme for Zsh
 G,https://github.com/davidtsadler/dmenu.git,is a dynamic menu
 G,https://github.com/davidtsadler/dwm.git,is a dynamic window manager
 G,https://github.com/davidtsadler/st.git,is a simple terminal
