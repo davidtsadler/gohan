@@ -6,6 +6,7 @@
 ,libx11,is a dependency when compiling some software
 ,libxft,is a dependency when compiling some software
 ,msmtp,is a very simple and easy to use SMTP client
+,newsboat,is a RSS/Atom feedreader
 ,openssh,is a premier connectivity tool for remote login with the SSH protocol
 ,pass,safely encrypts passwords
 ,php,is a web development scripting language
