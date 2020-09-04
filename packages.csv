@@ -2,9 +2,12 @@
 ,alsa-utils, contains utilities for ALSA
 ,base-devel,contains tools to compile software
 ,git,is needed to install software from git repositories
+,isync,is a command line application to synchronize mailboxes
 ,libx11,is a dependency when compiling some software
 ,libxft,is a dependency when compiling some software
+,msmtp,is a very simple and easy to use SMTP client
 ,openssh,is a premier connectivity tool for remote login with the SSH protocol
+,pass,safely encrypts passwords
 ,php,is a web development scripting language
 ,terminus-font,is a monospace font that can be used in st
 ,wget,utility for downloading files via the command line
@@ -12,6 +15,7 @@
 ,xorg-xinit,will allow us to start the display server
 A,auto-cpufreq-git,an automatic CPU speed & power optimizer
 A,brave-bin,is a free and open-source web browser that blocks ads and website trackers
+A,mutt-wizard-git,is a light-weight terminal-based email system
 A,ttf-meslo-nerd-font-powerlevel10k,font for powerlevel10k
 A,zsh-theme-powerlevel10k-git,powerlevel10k theme for Zsh
 G,https://github.com/davidtsadler/dmenu.git,is a dynamic menu
