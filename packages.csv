@@ -19,6 +19,7 @@ A,auto-cpufreq-git,an automatic CPU speed & power optimizer
 A,brave-bin,is a free and open-source web browser that blocks ads and website trackers
 A,mutt-wizard-git,is a light-weight terminal-based email system
 A,ttf-meslo-nerd-font-powerlevel10k,font for powerlevel10k
+A,zsh-fast-syntax-highlighting,is a feature rich syntax highlighting for Zsh
 A,zsh-theme-powerlevel10k-git,powerlevel10k theme for Zsh
 G,https://github.com/davidtsadler/dmenu.git,is a dynamic menu
 G,https://github.com/davidtsadler/dwm.git,is a dynamic window manager
