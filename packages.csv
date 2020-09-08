@@ -14,6 +14,7 @@
 ,wget,utility for downloading files via the command line
 ,xorg-server,is the display server
 ,xorg-xinit,will allow us to start the display server
+,zsh,is a shell
 A,auto-cpufreq-git,an automatic CPU speed & power optimizer
 A,brave-bin,is a free and open-source web browser that blocks ads and website trackers
 A,mutt-wizard-git,is a light-weight terminal-based email system

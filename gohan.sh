@@ -58,7 +58,7 @@ preinstall_msg() {
 add_user() {
   # Adds user `$name` with password $pass1.
   dialog --infobox "Adding user \"$name\"..." 4 50
-  useradd -m -s /bin/bash "$name" >/dev/null 2>&1 || mkdir -p /home/"$name" && chown "$name":"$name" /home/"$name"
+  useradd -m -s /bin/zsh "$name" >/dev/null 2>&1 || mkdir -p /home/"$name" && chown "$name":"$name" /home/"$name"
   usermod -aG wheel "$name"
   [ ! -d "/home/$name/.local/src" ] && mkdir -p "/home/$name/.local/src" && chown -R "$name":"$name" /home/"$name/.local"
   # Remove these files as they will be installed as part of the dotfiles.
