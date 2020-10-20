@@ -1,6 +1,7 @@
 #Tag, Name, Description
 ,alsa-utils, contains utilities for ALSA
 ,base-devel,contains tools to compile software
+,ctags, generates an index (or tag) file of names found in source and header files
 ,git,is needed to install software from git repositories
 ,isync,is a command line application to synchronize mailboxes
 ,libx11,is a dependency when compiling some software
