@@ -11,6 +11,7 @@
 ,openssh,is a premier connectivity tool for remote login with the SSH protocol
 ,pass,safely encrypts passwords
 ,php,is a web development scripting language
+,ranger,is a filemanager
 ,terminus-font,is a monospace font that can be used in st
 ,wget,utility for downloading files via the command line
 ,xorg-server,is the display server
